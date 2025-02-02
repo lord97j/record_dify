@@ -36,7 +36,7 @@ class RecordDify(Plugin):
             logger.error(f"[RecordDify]初始化异常：{e}")
             raise "[RecordDify] init failed, ignore "
 
-    def on_handle_context(self, e_context: EventContext, retry_count: int = 0):
+    def on_handle_context(self, e_context: EventContext):
         try:
             context = e_context["context"]
             flag= False
@@ -73,14 +73,10 @@ class RecordDify(Plugin):
             if result is not None and result != "None":
                 reply = Reply(ReplyType.TEXT, result)
                 e_context["reply"] = reply
-                e_context.action = EventAction.BREAK_PASS
+            e_context.action = EventAction.CONTINUE
 
         except Exception as e:
-            if retry_count < 3:
-                logger.warning(f"[RecordDify] {str(e)}, retry {retry_count + 1}")
-                self.on_handle_context(e_context, retry_count + 1)
-                return
-
+            e_context.action = EventAction.BREAK_PASS
             logger.exception(f"[RecordDify] {str(e)}")
             
         
