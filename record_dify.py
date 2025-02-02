@@ -14,7 +14,7 @@ from plugins import *
 
 @plugins.register(
     name="RecordDify",
-    esire_priority=10,
+    esire_priority=90,
     hidden=False,
     enabled=False,
     desc="使用dify自动记录聊天记录进行知识积累",
@@ -39,7 +39,7 @@ class RecordDify(Plugin):
     def on_handle_context(self, e_context: EventContext):
         try:
             context = e_context["context"]
-            logger.debug(f"[RecordDify] on_handle_context. context={context}")
+            logger.info(f"[RecordDify] on_handle_context. context={context}")
             flag= False
             # 判断是群聊还是单聊
             if context.get("isgroup", False):
@@ -60,7 +60,8 @@ class RecordDify(Plugin):
                 return
 
             content = context.content
-            if context.type != ContextType.SHARING and context.type != ContextType.TEXT:
+            if context.type != ContextType.SHARING or context.type != ContextType.TEXT:
+                logger.debug("[RecordDify] on_handle_context. not sharing or text")
                 return
             user = context["msg"].other_user_nickname if context.get("msg") else "default"
 
