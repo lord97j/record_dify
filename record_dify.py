@@ -14,9 +14,9 @@ from plugins import *
 
 @plugins.register(
     name="RecordDify",
-    esire_priority=90,
-    hidden=False,
-    enabled=False,
+    esire_priority=0,
+    hidden=True,
+    enabled=True,
     desc="使用dify自动记录聊天记录进行知识积累",
     version="0.1",
     author="lord97j",
