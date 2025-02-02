@@ -58,8 +58,8 @@ class RecordDify(Plugin):
                 return
 
             content = context.content
-            if context.type != ContextType.SHARING or context.type != ContextType.TEXT:
-                logger.debug("[RecordDify] on_handle_context. not sharing or text")
+            if context.type != ContextType.SHARING and context.type != ContextType.TEXT:
+                logger.debug("[RecordDify] on_handle_context. not text or sharing")
                 return
             user = context["msg"].other_user_nickname if context.get("msg") else "default"
 
