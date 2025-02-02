@@ -3,5 +3,5 @@
   "app_type": "workflow",
   "api_base": "https://api.dify.ai/v1",
   "api_key": "app-xx", 
-  "group_name_keywords": ["备忘"]
+  "group_name_keyword_white_list": ["备忘", "日记"],
 }
