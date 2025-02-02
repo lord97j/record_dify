@@ -14,11 +14,11 @@ from plugins import *
 
 @plugins.register(
     name="RecordDify",
-    esire_priority=0,
+    esire_priority=10,
     hidden=False,
-    enabled=True,
+    enabled=False,
     desc="使用dify自动记录聊天记录进行知识积累",
-    version="0.1",
+    version="0.2",
     author="lord97j",
 )
 class RecordDify(Plugin):
@@ -28,8 +28,7 @@ class RecordDify(Plugin):
         try:
             self.config = super().load_config()
             if self.config is None:
-                logger.info("[RecordDify] config is None")
-                return
+                self.config = self._load_config_template()
             logger.info(f"[RecordDify] inited, config={self.config}")
             self.handlers[Event.ON_HANDLE_CONTEXT] = self.on_handle_context
         except Exception as e:
