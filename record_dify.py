@@ -46,11 +46,10 @@ class RecordDify(Plugin):
                 # 群聊情况
                 group_name = context["group_name"]
                 # 遍历配置，找到匹配的群名关键词
-                for conf in self.config:
-                    if "group_name_keywords" in conf:
-                        if any(keyword in group_name for keyword in conf["group_name_keywords"]):
-                            flag = True
-                            break
+                if "group_name_keywords" in self.config:
+                    if any(keyword in group_name for keyword in self.config["group_name_keywords"]):
+                        flag = True
+                        break
             else:
                 # 单聊情况
                 logger.debug("[RecordDify] single_chat is not supported")
