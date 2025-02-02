@@ -77,7 +77,7 @@ class RecordDify(Plugin):
             e_context.action = EventAction.CONTINUE
 
         except Exception as e:
-            e_context.action = EventAction.BREAK_PASS
+            e_context.action = EventAction.CONTINUE
             logger.exception(f"[RecordDify] {str(e)}")
             
         
