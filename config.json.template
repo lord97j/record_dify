@@ -1,0 +1,7 @@
+{
+  "app_name": "xx应用",
+  "app_type": "workflow",
+  "api_base": "https://api.dify.ai/v1",
+  "api_key": "app-xx", 
+  "group_name_keywords": ["备忘"]
+}
