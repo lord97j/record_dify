@@ -5,6 +5,8 @@ import html
 from urllib.parse import urlparse
 
 import requests
+import aiohttp
+import asyncio
 
 import plugins
 from bridge.context import ContextType
@@ -68,7 +70,7 @@ class RecordDify(Plugin):
                 "user": user,
                 "group_name": group_name
             }
-            self._dify_workflow_run(self.config["api_base"], self.config["api_key"], inputs, group_name)
+            asyncio.create_task(self._dify_workflow_run(self.config["api_base"], self.config["api_key"], inputs, group_name))
             e_context.action = EventAction.CONTINUE
 
         except Exception as e:
@@ -77,7 +79,7 @@ class RecordDify(Plugin):
             
         
     
-    def _dify_workflow_run(self, api_base: str, api_key: str, inputs: object, user: str):
+    async def _dify_workflow_run(self, api_base: str, api_key: str, inputs: object, user: str):
         try:
             headers = {
                 "Authorization": f"Bearer {api_key}",
@@ -89,7 +91,15 @@ class RecordDify(Plugin):
                 "response_mode": "blocking",
                 "user": user
             }
-            requests.post(f'{api_base}/workflows/run', headers=headers, json=payload, timeout=60)
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    f'{api_base}/workflows/run',
+                    headers=headers,
+                    json=payload,
+                    timeout=60
+                ) as resp:
+                    resp.raise_for_status()
+            return
         except Exception as e:
             logger.exception(f"[RecordDify] dify {str(e)}")
         return None
