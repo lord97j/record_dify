@@ -39,6 +39,7 @@ class RecordDify(Plugin):
     def on_handle_context(self, e_context: EventContext):
         try:
             context = e_context["context"]
+            logger.debug(f"[RecordDify] on_handle_context. context={context}")
             flag= False
             # 判断是群聊还是单聊
             if context.get("isgroup", False):
