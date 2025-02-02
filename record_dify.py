@@ -48,7 +48,6 @@ class RecordDify(Plugin):
                 if "group_name_keywords" in self.config:
                     if any(keyword in group_name for keyword in self.config["group_name_keywords"]):
                         flag = True
-                        break
             else:
                 # 单聊情况
                 logger.debug("[RecordDify] single_chat is not supported")
@@ -101,24 +100,3 @@ class RecordDify(Plugin):
         except Exception as e:
             logger.exception(f"[RecordDify] dify {str(e)}")
         return None
-    
-    def _dify_upload_file(self, api_base: str, api_key: str, inputs: object, group_name: str):
-        try:
-            headers = {
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-            }
-            files = {
-                'file': ('localfile', open(inputs['file_path'], 'rb'), 'image/png')
-            }
-            data = {
-                'user': group_name
-            }
-            response = requests.post(f'{api_base}/v1/files/upload', headers=headers, files=files, data=data, timeout=60)
-            response.raise_for_status()
-            return response.json()
-        except Exception as e:
-            logger.exception(f"[RecordDify] dify upload file {str(e)}")
-            return None
-            
