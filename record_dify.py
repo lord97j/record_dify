@@ -68,10 +68,7 @@ class RecordDify(Plugin):
                 "user": user,
                 "group_name": group_name
             }
-            result = self._dify_workflow_run(self.config["api_base"], self.config["api_key"], inputs, group_name)
-            if result is not None and result != "None":
-                reply = Reply(ReplyType.TEXT, result)
-                e_context["reply"] = reply
+            self._dify_workflow_run(self.config["api_base"], self.config["api_key"], inputs, group_name)
             e_context.action = EventAction.CONTINUE
 
         except Exception as e:
@@ -92,11 +89,7 @@ class RecordDify(Plugin):
                 "response_mode": "blocking",
                 "user": user
             }
-            response = requests.post(f'{api_base}/workflows/run', headers=headers, json=payload, timeout=60)
-            response.raise_for_status()
-            result = response.json()
-            if "data" in result and "status" in result["data"] and result["data"]["status"] == "succeeded" and "outputs" in result["data"]:
-                return result["data"]["outputs"]["text"] if "text" in result["data"]["outputs"] else None
+            requests.post(f'{api_base}/workflows/run', headers=headers, json=payload, timeout=60)
         except Exception as e:
             logger.exception(f"[RecordDify] dify {str(e)}")
         return None
